@@ -1,4 +1,15 @@
+import jwt
+import datetime
 from abc import ABC, abstractmethod
+from rest_framework import serializers
+from django.apps import apps
+from django.db import models, connection
+
+def generate_jwt_token(payload, secret_key, expiration_minutes=30):
+    expiration = datetime.datetime.utcnow() + datetime.timedelta(minutes=expiration_minutes)
+    payload['exp'] = expiration
+    token = jwt.encode(payload, secret_key, algorithm='HS256')
+    return token
 from rest_framework import serializers
 from django.apps import apps
 from django.db import models, connection
